@@ -88,4 +88,15 @@ class DomainBuilderTest extends TestCase
 
         $domainBuilder->api();
     }
+
+    /**
+     * @test
+     * @expectedException \MichaelJennings\Utilities\Exceptions\DomainNotSetException
+     */
+    public function it_throws_an_exception_if_no_domains_are_set()
+    {
+        $domainBuilder = new DomainBuilder();
+
+        $domainBuilder->api();
+    }
 }

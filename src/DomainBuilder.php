@@ -39,7 +39,7 @@ class DomainBuilder
      */
     public function get(string $key, string $path = null): string
     {
-        if ( ! array_key_exists($key, $this->domains)) {
+        if ( ! $this->domains || ! array_key_exists($key, $this->domains)) {
             throw new DomainNotSetException("No domain has been set with the name '$key', add it to the utilities config.");
         }
 

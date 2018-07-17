@@ -4,6 +4,12 @@ namespace MichaelJennings\Utilities;
 
 use MichaelJennings\Utilities\Exceptions\DomainNotSetException;
 
+/**
+ * This class allows you to build URLs to multiple domains while
+ * keeping using the same API throughout your application.
+ *
+ * @package MichaelJennings\Utilities
+ */
 class DomainBuilder
 {
     /**
@@ -20,6 +26,24 @@ class DomainBuilder
         }
 
         $this->domains = $domains;
+    }
+
+    /**
+     * Check that the domain is set in the config and then attempt to build
+     * the url.
+     *
+     * @param string      $key
+     * @param string|null $path
+     * @return string
+     * @throws DomainNotSetException
+     */
+    public function get(string $key, string $path = null): string
+    {
+        if ( ! array_key_exists($key, $this->domains)) {
+            throw new DomainNotSetException("No domain has been set with the name '$key', add it to the utilities config.");
+        }
+
+        return $this->build($this->domains[$key], $path);
     }
 
     /**
@@ -60,10 +84,6 @@ class DomainBuilder
      */
     public function __call($method, array $arguments): ?string
     {
-        if ( ! array_key_exists($method, $this->domains)) {
-            throw new DomainNotSetException("No domain has been set with the name '$method', add it to the utilities config.");
-        }
-
-        return $this->build($this->domains[$method], ...$arguments);
+        return $this->get($method, ...$arguments);
     }
 }

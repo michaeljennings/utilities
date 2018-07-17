@@ -15,6 +15,20 @@ class DomainBuilderTest extends TestCase
             'app' => 'http://app.testing.com',
         ]);
 
+        $url = $domainBuilder->get('app');
+
+        $this->assertEquals('http://app.testing.com', $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_dynamically_builds_a_domain()
+    {
+        $domainBuilder = new DomainBuilder([
+            'app' => 'http://app.testing.com',
+        ]);
+
         $url = $domainBuilder->app();
 
         $this->assertEquals('http://app.testing.com', $url);

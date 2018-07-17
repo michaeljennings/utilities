@@ -7,19 +7,19 @@ use MichaelJennings\Utilities\Exceptions\DomainNotSetException;
 class DomainBuilder
 {
     /**
-     * The package config.
+     * All of the configured domains.
      *
      * @var array
      */
-    protected $config;
+    protected $domains;
 
-    public function __construct(array $config = null)
+    public function __construct(array $domains = null)
     {
-        if ( ! $config) {
-            $config = config('utilities');
+        if ( ! $domains) {
+            $domains = config('utilities.domains');
         }
 
-        $this->config = $config;
+        $this->domains = $domains;
     }
 
     /**
@@ -60,12 +60,10 @@ class DomainBuilder
      */
     public function __call($method, array $arguments): ?string
     {
-        $domains = $this->config['domains'];
-
-        if ( ! in_array($method, $domains)) {
+        if ( ! array_key_exists($method, $this->domains)) {
             throw new DomainNotSetException("No domain has been set with the name '$method', add it to the utilities config.");
         }
 
-        return $this->build($method, ...$arguments);
+        return $this->build($this->domains[$method], ...$arguments);
     }
 }

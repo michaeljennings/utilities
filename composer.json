@@ -1,0 +1,16 @@
+{
+  "name": "michaeljennings/utilities",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Jennings",
+      "email": "michael.jennings91@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "MichaelJennings\\Utilities\\": "src/"
+    }
+  }
+}

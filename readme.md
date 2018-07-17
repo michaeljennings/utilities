@@ -2,6 +2,10 @@
 
 This package contains a series of utility classes that I use frequently in projects, most of the utilities are built with laravel in mind.
 
+### Installation
+
+Install using `composer require michaeljennings/utilities`.
+
 ### Domain Builder
 
 Very frequently I build projects that use multiple subdomains. I also find I need to create links between subdomains quite frequently but I don't want to hard code the links.

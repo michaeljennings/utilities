@@ -32,12 +32,12 @@ class DomainBuilder
      * Check that the domain is set in the config and then attempt to build
      * the url.
      *
-     * @param string      $key
-     * @param string|null $path
+     * @param string            $key
+     * @param string|array|null $path
      * @return string
      * @throws DomainNotSetException
      */
-    public function get(string $key, string $path = null): string
+    public function get(string $key, $path = null): string
     {
         if ( ! $this->domains || ! array_key_exists($key, $this->domains)) {
             throw new DomainNotSetException("No domain has been set with the name '$key', add it to the utilities config.");
@@ -49,17 +49,27 @@ class DomainBuilder
     /**
      * Build a url with the provided name.
      *
-     * @param string      $domain
-     * @param string|null $path
+     * @param string            $domain
+     * @param string|array|null $paths
      * @return string
      */
-    protected function build(string $domain, string $path = null): string
+    protected function build(string $domain, $paths = null): string
     {
-        if ( ! $path) {
+        if ( ! $paths) {
             return $this->clean($domain);
         }
 
-        return $this->clean($domain, " \t\n\r\0\x0B/") . '/' . $this->clean($path);
+        if ( ! is_array($paths)) {
+            $paths = [$paths];
+        }
+
+        array_unshift($paths, $this->clean($domain));
+
+        $paths = array_map(function ($path) {
+            return $this->clean($path);
+        }, $paths);
+
+        return implode('/', $paths);
     }
 
     /**

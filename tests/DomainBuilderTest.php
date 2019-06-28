@@ -109,10 +109,11 @@ class DomainBuilderTest extends TestCase
 
     /**
      * @test
-     * @expectedException \MichaelJennings\Utilities\Exceptions\DomainNotSetException
      */
     public function it_throws_an_exception_if_the_domain_is_not_set()
     {
+        $this->expectException('\MichaelJennings\Utilities\Exceptions\DomainNotSetException');
+
         $domainBuilder = new DomainBuilder([
             'app' => 'http://app.testing.com',
         ]);
@@ -122,10 +123,11 @@ class DomainBuilderTest extends TestCase
 
     /**
      * @test
-     * @expectedException \MichaelJennings\Utilities\Exceptions\DomainNotSetException
      */
     public function it_throws_an_exception_if_no_domains_are_set()
     {
+        $this->expectException('\MichaelJennings\Utilities\Exceptions\DomainNotSetException');
+
         $domainBuilder = new DomainBuilder();
 
         $domainBuilder->api();

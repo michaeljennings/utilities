@@ -29,13 +29,15 @@ class CachesTemplateTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_the_raw_item_is_not_cacheable()
+    public function it_does_not_cache_if_the_raw_item_is_not_cacheable()
     {
-        $this->expectException(NonCacheableEntityException::class);
-
         $this->refinery->refine([
             'id' => 1
         ]);
+
+        $cached = app('cache.store')->tags(['item', 'item.1'])->get('refinery.template');
+
+        $this->assertNull($cached);
     }
 
     /**

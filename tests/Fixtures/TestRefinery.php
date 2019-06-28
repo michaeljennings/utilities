@@ -18,7 +18,7 @@ class TestRefinery extends Refinery
     protected function setTemplate($item)
     {
         return [
-            'id' => $item->getKey(),
+            'id' => 1,
         ];
     }
 }

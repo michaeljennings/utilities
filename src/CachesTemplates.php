@@ -17,7 +17,7 @@ trait CachesTemplates
     public function refineItem($raw)
     {
         if (! $raw instanceof Cacheable) {
-            throw new NonCacheableEntityException("The raw item must implement the cacheable interface");
+            return parent::refineItem($raw);
         }
 
         $refined = broker()->remember($raw, 'refinery.template', function() use ($raw) {

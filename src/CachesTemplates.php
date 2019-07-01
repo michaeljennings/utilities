@@ -7,6 +7,8 @@ use MichaelJennings\Utilities\Contracts\RefineryCache;
 trait CachesTemplates
 {
     /**
+     * The refinery cache implementation.
+     *
      * @var RefineryCache
      */
     protected $cache;

@@ -3,6 +3,8 @@
 namespace MichaelJennings\Utilities;
 
 use Illuminate\Support\ServiceProvider;
+use MichaelJennings\Utilities\Contracts\RefineryCache;
+use MichaelJennings\Utilities\Refinery\Cache;
 
 class UtilityServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,15 @@ class UtilityServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../config/utilities.php', 'utilities'
         );
+
+        $this->registerRefineryCache();
+    }
+
+    /**
+     * Register the refinery cache driver.
+     */
+    protected function registerRefineryCache()
+    {
+        $this->app->singleton(RefineryCache::class, Cache::class);
     }
 }

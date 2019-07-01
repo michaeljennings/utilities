@@ -2,12 +2,17 @@
 
 namespace MichaelJennings\Utilities;
 
-use Michaeljennings\Broker\Contracts\Cacheable;
+use MichaelJennings\Utilities\Contracts\RefineryCache;
 
 trait CachesTemplates
 {
     /**
-     * Refine a single item using the supplied callback.
+     * @var RefineryCache
+     */
+    protected $cache;
+
+    /**
+     * Refine a single item uing the supplied callback.
      *
      * @param mixed $raw
      * @return mixed
@@ -15,13 +20,13 @@ trait CachesTemplates
      */
     public function refineItem($raw)
     {
-        if (! $raw instanceof Cacheable) {
-            $refined = $this->setTemplate($raw);
-        } else {
-            $refined = broker()->remember($raw, 'refinery.template.' . get_class($this), function() use ($raw) {
-                return $this->setTemplate($raw);
-            });
+        if (! $this->cache) {
+            $this->cache = app(RefineryCache::class);
         }
+
+        $refined = $this->cache->remember($raw, 'refinery.template.' . get_class($this), function() use ($raw) {
+            return $this->setTemplate($raw);
+        });
 
         if ( ! empty($this->attachments)) {
             $refined = $this->merge($refined, $this->includeAttachments($raw));

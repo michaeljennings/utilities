@@ -3,7 +3,6 @@
 namespace MichaelJennings\Utilities;
 
 use Michaeljennings\Broker\Contracts\Cacheable;
-use MichaelJennings\Utilities\Exceptions\NonCacheableEntityException;
 
 trait CachesTemplates
 {
@@ -17,12 +16,12 @@ trait CachesTemplates
     public function refineItem($raw)
     {
         if (! $raw instanceof Cacheable) {
-            throw new NonCacheableEntityException("The raw item must implement the cacheable interface");
+            $refined = $this->setTemplate($raw);
+        } else {
+            $refined = broker()->remember($raw, 'refinery.template.' . get_class($this), function() use ($raw) {
+                return $this->setTemplate($raw);
+            });
         }
-
-        $refined = broker()->remember($raw, 'refinery.template.' . get_class($this), function() use ($raw) {
-            return $this->setTemplate($raw);
-        });
 
         if ( ! empty($this->attachments)) {
             $refined = $this->merge($refined, $this->includeAttachments($raw));

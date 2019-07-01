@@ -21,7 +21,7 @@ class CachesTemplateTest extends TestCase
     {
         $refined = $this->refinery->refine(new CacheableItem());
 
-        $cached = app('cache.store')->tags(['item', 'item.1'])->get('refinery.template');
+        $cached = app('cache.store')->tags(['item', 'item.1'])->get('refinery.template.' . TestRefinery::class);
 
         $this->assertEquals($refined, $cached);
     }

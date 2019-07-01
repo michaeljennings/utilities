@@ -26,7 +26,7 @@ trait CachesTemplates
             $this->cache = app(RefineryCache::class);
         }
 
-        $refined = $this->cache->remember($raw, 'refinery.template.' . get_class($this), function() use ($raw) {
+        $refined = $this->cache->remember($raw, $this->refineryKey(), function() use ($raw) {
             return $this->setTemplate($raw);
         });
 
@@ -35,5 +35,15 @@ trait CachesTemplates
         }
 
         return $refined;
+    }
+
+    /**
+     * Generate a key for the refinery.
+     *
+     * @return string
+     */
+    protected function refineryKey(): string
+    {
+        return 'refinery.template.' . get_class($this);
     }
 }

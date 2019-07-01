@@ -6,6 +6,56 @@ This package contains a series of utility classes that I use frequently in proje
 
 Install using `composer require michaeljennings/utilities`.
 
+### Refinery Caching
+
+Occasionally when using the [refinery](https://github.com/michaeljennings/refinery) package you may have templates that are quite intensive to run.
+
+To fix this you can use the `CachesTemplates` trait.
+
+Firstly, you need to install the [michaeljennings/broker](https://github.com/michaeljennings/broker) package.
+
+Then on the class you want to refine implement the `Cacheable` interface. See the broker documentation for more information.
+
+```php
+// Item being refined
+class ToRefine implements Michaeljennings\Broker\Contracts\Cacheable
+{
+    /**
+     * Get the key to cache the attributes against.
+     *
+     * @return string
+     */
+    public function getCacheKey()
+    {
+        return 'test';
+    }
+
+    /**
+     * Get the unique key for the cacheable item.
+     *
+     * @return int|string
+     */
+    public function getKey()
+    {
+        return 1;    
+    }
+}
+```
+
+Finally implement the `CachesTemplates` trait on your refinery.
+
+```php
+class Example extends Michaeljennings\Refinery\Refinery
+{
+    use CachesTemplates;
+    
+    public function setTemplate($item)
+    {
+        //
+    }
+}
+```
+
 ### Domain Builder
 
 Very frequently I build projects that use multiple subdomains. I also find I need to create links between subdomains quite frequently but I don't want to hard code the links.

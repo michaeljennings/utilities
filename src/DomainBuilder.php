@@ -21,7 +21,7 @@ class DomainBuilder
 
     public function __construct(array $domains = null)
     {
-        if ( ! $domains) {
+        if (! $domains) {
             $domains = config('utilities.domains');
         }
 
@@ -39,7 +39,7 @@ class DomainBuilder
      */
     public function get(string $key, $path = null): string
     {
-        if ( ! $this->domains || ! array_key_exists($key, $this->domains)) {
+        if (! $this->domains || ! array_key_exists($key, $this->domains)) {
             throw new DomainNotSetException("No domain has been set with the name '$key', add it to the utilities config.");
         }
 
@@ -55,11 +55,11 @@ class DomainBuilder
      */
     protected function build(string $domain, $paths = null): string
     {
-        if ( ! $paths) {
+        if (! $paths) {
             return $this->clean($domain);
         }
 
-        if ( ! is_array($paths)) {
+        if (! is_array($paths)) {
             $paths = [$paths];
         }
 
@@ -95,5 +95,19 @@ class DomainBuilder
     public function __call($method, array $arguments): ?string
     {
         return $this->get($method, ...$arguments);
+    }
+
+    /**
+     * Attempt to statically build the correct domain by the method name.
+     *
+     * @param string $method
+     * @param array  $arguments
+     * @return mixed
+     */
+    public static function __callStatic($method, array $arguments)
+    {
+        $builder = new static(config('utilities.domains'));
+
+        return $builder->get($method, ...$arguments);
     }
 }

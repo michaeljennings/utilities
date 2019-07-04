@@ -37,6 +37,20 @@ class DomainBuilderTest extends TestCase
     /**
      * @test
      */
+    public function it_statically_builds_a_dynamic_app()
+    {
+        config()->set('utilities.domains', [
+            'app' => 'http://app.testing.com',
+        ]);
+
+        $url = DomainBuilder::app();
+
+        $this->assertEquals('http://app.testing.com', $url);
+    }
+
+    /**
+     * @test
+     */
     public function it_appends_the_parameter_to_the_domain()
     {
         $domainBuilder = new DomainBuilder([
@@ -51,6 +65,20 @@ class DomainBuilderTest extends TestCase
     /**
      * @test
      */
+    public function it_statically_appends_the_parameter_to_the_domain()
+    {
+        config()->set('utilities.domains', [
+            'app' => 'http://app.testing.com',
+        ]);
+
+        $url = DomainBuilder::app('testing/foo');
+
+        $this->assertEquals('http://app.testing.com/testing/foo', $url);
+    }
+
+    /**
+     * @test
+     */
     public function it_appends_the_path_as_an_array()
     {
         $domainBuilder = new DomainBuilder([
@@ -58,6 +86,23 @@ class DomainBuilderTest extends TestCase
         ]);
 
         $url = $domainBuilder->app([
+            'testing',
+            'foo'
+        ]);
+
+        $this->assertEquals('http://app.testing.com/testing/foo', $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_statically_appends_to_the_path_with_an_array()
+    {
+        config()->set('utilities.domains', [
+            'app' => 'http://app.testing.com',
+        ]);
+
+        $url = DomainBuilder::app([
             'testing',
             'foo'
         ]);

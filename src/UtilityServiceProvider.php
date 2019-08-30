@@ -14,7 +14,7 @@ class UtilityServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../config/utilities.php', config('utilities')
+            __DIR__ . '/../config/utilities.php' => config_path('utilities')
         ], 'michaeljennings-utilities');
     }
 

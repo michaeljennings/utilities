@@ -37,13 +37,13 @@ class DomainBuilder
      * @return string
      * @throws DomainNotSetException
      */
-    public function get(string $key, $path = null): string
+    public function get(string $key, ...$path): string
     {
         if (! $this->domains || ! array_key_exists($key, $this->domains)) {
             throw new DomainNotSetException("No domain has been set with the name '$key', add it to the utilities config.");
         }
 
-        return $this->build($this->domains[$key], $path);
+        return $this->build($this->domains[$key], ...$path);
     }
 
     /**
@@ -53,23 +53,36 @@ class DomainBuilder
      * @param string|array|null $paths
      * @return string
      */
-    protected function build(string $domain, $paths = null): string
+    protected function build(string $domain, ...$paths): string
     {
-        if (! $paths) {
-            return $this->clean($domain);
-        }
-
-        if (! is_array($paths)) {
-            $paths = [$paths];
-        }
-
         array_unshift($paths, $this->clean($domain));
 
-        $paths = array_map(function ($path) {
-            return $this->clean($path);
-        }, $paths);
+        $paths = $this->cleanPaths($paths);
 
         return implode('/', $paths);
+    }
+
+    /**
+     * Clean erroneous characters from each path.
+     *
+     * @param array $paths
+     * @return array
+     */
+    protected function cleanPaths(array $paths): array
+    {
+        $toClean = [];
+
+        foreach ($paths as $path) {
+            if (is_array($path)) {
+                $toClean = array_merge($toClean, $path);
+            } else {
+                $toClean[] = $path;
+            }
+        }
+
+        return array_map(function ($path) {
+            return $this->clean($path);
+        }, $toClean);
     }
 
     /**

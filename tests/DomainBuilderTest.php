@@ -113,6 +113,34 @@ class DomainBuilderTest extends TestCase
     /**
      * @test
      */
+    public function it_appends_the_path_as_an_additional_parameters()
+    {
+        $domainBuilder = new DomainBuilder([
+            'app' => 'http://app.testing.com',
+        ]);
+
+        $url = $domainBuilder->app('testing', 'foo');
+
+        $this->assertEquals('http://app.testing.com/testing/foo', $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_statically_appends_the_path_as_an_additional_parameters()
+    {
+        config()->set('utilities.domains', [
+            'app' => 'http://app.testing.com',
+        ]);
+
+        $url = DomainBuilder::app('testing', 'foo');
+
+        $this->assertEquals('http://app.testing.com/testing/foo', $url);
+    }
+
+    /**
+     * @test
+     */
     public function it_appends_to_the_domain_and_strips_invalid_characters()
     {
         $domainBuilder = new DomainBuilder([

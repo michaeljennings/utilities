@@ -82,7 +82,9 @@ You can also pass anything you want to be appended to the url as an argument.
 
 ```php
 $url = $domainBuilder->get('app', 'foo/bar'); // http://app.example.com/foo/bar
+$url = $domainBuilder->get('app', 'foo', 'bar'); // http://app.example.com/foo/bar
 $url = $domainBuilder->app('foo/bar'); // http://app.example.com/foo/bar
+$url = $domainBuilder->app('foo', 'bar'); // http://app.example.com/foo/bar
 ```
 
 I usually resolve class using laravel's IOC container, but if you want to new it up yourself you just need to pass the config to the constructor.
